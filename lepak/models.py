@@ -1,16 +1,18 @@
 from django.db import models
+# from django.conf import settings
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.contrib.auth import get_user_model
+# logged_in_user = settings.AUTH_USER_MODEL
 
 # Create your models here.
-
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, default={"username": "test", "password": "123"})
     breathe_theme = models.CharField(default="Box", max_length=50)
     breathe_count = models.PositiveSmallIntegerField(default=1)
-    # journals = models.OneToOneField(Journal, on_delete=models.CASCADE)
+    # journals = OneToMany(to=Journal)
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
@@ -22,7 +24,7 @@ class Profile(models.Model):
         instance.profile.save()
 
 class Journal(models.Model):
-    # profile = models.ForeignKey("Profile", on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="journals", default=1)
     date = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=100, blank=True)
     entry = models.TextField(blank=True)

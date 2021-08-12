@@ -1,3 +1,4 @@
+from django.contrib.sessions.models import Session
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
@@ -24,7 +25,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
 class JournalViewSet(viewsets.ModelViewSet):
     queryset = Journal.objects.all()
     serializer_class = JournalSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
 
 # ========== User Sessions ==========
 class LoginView(generics.ListCreateAPIView):
