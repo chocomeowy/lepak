@@ -16,10 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from lepak.views import UserViewSet
+from lepak.views import UserViewSet, JournalViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet) 
+router.register(r'journals', JournalViewSet) 
 
 urlpatterns = [
     path('', include(router.urls)),
