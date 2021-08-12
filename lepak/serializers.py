@@ -1,4 +1,4 @@
-from .models import User, Journal
+from .models import Journal
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 
@@ -7,6 +7,9 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'password']
+
+class TokenSerializer(serializers.Serializer):
+    token = serializers.CharField(max_length=255)
 
 class JournalSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
