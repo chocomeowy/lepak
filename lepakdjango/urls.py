@@ -20,10 +20,11 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from lepak.views import UserViewSet, JournalViewSet, LoginView, RegisterUsersView
+from lepak.views import UserViewSet, ProfileViewSet, JournalViewSet, LoginView, RegisterUsersView
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet) 
+router.register(r'profiles', ProfileViewSet) 
 router.register(r'journals', JournalViewSet) 
 
 urlpatterns = [
