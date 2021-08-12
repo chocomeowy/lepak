@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from .models import User, Journal
+from .models import Journal
 from rest_framework import viewsets, generics, permissions, status
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -19,7 +19,7 @@ class UserViewSet(viewsets.ModelViewSet):
 class JournalViewSet(viewsets.ModelViewSet):
     queryset = Journal.objects.all()
     serializer_class = JournalSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
 
 # ========== User Sessions ==========
 class LoginView(generics.ListCreateAPIView):
@@ -33,7 +33,6 @@ class LoginView(generics.ListCreateAPIView):
     permission_classes = (permissions.AllowAny,)
     serializer_class = UserSerializer
     queryset = User.objects.all()
-
 
     def post(self, request, *args, **kwargs):
         username = request.data.get("username", "")
@@ -51,3 +50,27 @@ class LoginView(generics.ListCreateAPIView):
             serializer.is_valid()
             return Response(serializer.data)
         return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+class RegisterUsersView(generics.ListCreateAPIView):
+    """
+    POST user/signup/
+    """
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        username = request.data.get("username", "")
+        password = request.data.get("password", "")
+
+        if not username or not password:
+            return Response(
+                data={
+                    "message": "username and password is required to register a user"
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        new_user = User.objects.create_user(
+            username=username, password=password
+        )
+        return Response(status=status.HTTP_201_CREATED)
