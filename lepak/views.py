@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from .models import Profile, Journal
 from rest_framework import viewsets, generics, permissions, status
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import UserSerializer, TokenSerializer, JournalSerializer, ProfileSerializer
@@ -26,6 +27,18 @@ class JournalViewSet(viewsets.ModelViewSet):
     queryset = Journal.objects.all()
     serializer_class = JournalSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(profile=self.request.user)
+
+    def perform_update(self, serializer):
+        serializer.save(profile=self.request.user)
+
+    # def get_object(self):
+    #     pk = self.kwargs.get('pk')
+    #     if pk == 'current':
+    #         return self.request.user
+    #     return super()
 
 # ========== User Sessions ==========
 class LoginView(generics.ListCreateAPIView):

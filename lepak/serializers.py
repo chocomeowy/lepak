@@ -19,4 +19,4 @@ class TokenSerializer(serializers.Serializer):
 class JournalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Journal
-        fields = ['id', 'profile', 'date', 'title', 'entry', 'mood']
+        fields = ['id', 'date', 'title', 'entry', 'mood']
