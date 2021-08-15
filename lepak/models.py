@@ -8,25 +8,6 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 class Profile(AbstractUser):
     breathe_theme = models.CharField(default="Box", max_length=50)
     breathe_count = models.PositiveSmallIntegerField(default=0)
-    
-    # user = models.OneToOneField(User, on_delete=models.CASCADE, default={"username": "test", "password": "123"})
-    # breathe_theme = models.CharField(default="Box", max_length=50)
-    # breathe_count = models.PositiveSmallIntegerField(default=1)
-    # journals = serializers.PrimaryKeyRelatedField(many=True, queryset=Journal.objects.all())
-
-    # @receiver(post_save, sender=User)
-    # def create_user_profile(sender, instance, created, **kwargs):
-    #     if created:
-    #         Profile.objects.create(user=instance)
-
-    # @receiver(post_save, sender=User)
-    # def save_user_profile(sender, instance, **kwargs):
-    #     instance.profile.save()
-
-    # @action(detail=True, methods=['get'])
-    # def journals(self, request, pk=None):
-    #     return self
-        # Journal.objects.create()
 
 class Journal(models.Model):
     profile = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="journals")
@@ -37,7 +18,3 @@ class Journal(models.Model):
             MaxValueValidator(5),
             MinValueValidator(1)
         ])
-    # def save(self, request, *args, **kwargs):
-    #     print(request.user)
-    #     self.profile = request.user
-    #     super(Journal, self).save(request, *args, **kwargs)

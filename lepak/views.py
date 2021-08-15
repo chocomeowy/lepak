@@ -1,31 +1,13 @@
-from django.contrib.sessions.models import Session
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User
-from django.http import request
-from django.shortcuts import render, redirect
+# from django.contrib.auth.models import User
 from .models import Profile, Journal
 from rest_framework import viewsets, generics, permissions, status
-from rest_framework.authentication import TokenAuthentication
+# from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import TokenSerializer, JournalSerializer, ProfileSerializer
 
 # ========== Model Viewsets ==========
-# class UserViewSet(viewsets.ModelViewSet):
-    ## The Main Query for the index route
-    # queryset = User.objects.all()
-    # The serializer class for serializing output
-    # serializer_class = UserSerializer
-    # optional permission class set permission level
-    # permission_classes = [permissions.AllowAny]
-
-    # def get_object (self, request, serialize):
-    #     user = request.user.is_authenticated
-    #     print(user)
-    #     serialized = serialize("json", user)
-    #     final_data = json.loads(serialized)
-    #     return JsonResponse(final_data, safe= False)
-
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
@@ -36,24 +18,6 @@ class JournalViewSet(viewsets.ModelViewSet):
     serializer_class = JournalSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    # def create(self, serializer):
-        # serializer = self.get_serializer(data=request.data)
-        # serializer.is_valid(raise_exception=True)
-        # serializer.save()
-        # headers = self.get_success_headers(serializer.data)
-        # return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-    # def perform_create(self, serializer):
-    #     serializer.save(profile=self.request.user)
-
-    # def perform_update(self, serializer):
-    #     serializer.save(profile=self.request.user)
-
-    # def get_object(self):
-    #     pk = self.kwargs.get('pk')
-    #     if pk == 'current':
-    #         return self.request.user
-    #     return super()
 
 # ========== User Sessions ==========
 class LoginView(generics.ListCreateAPIView):
@@ -61,9 +25,7 @@ class LoginView(generics.ListCreateAPIView):
     POST user/login/
     """
 
-    # This permission class will overide the global permission class setting
-    # Permission checks are always run at the very start of the view, before any other code is allowed to proceed.
-    # The permission class here is set to AllowAny, which overwrites the global class to allow anyone to have access to login.
+    # override permission class to AllowAny
     permission_classes = (permissions.AllowAny,)
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
@@ -73,8 +35,7 @@ class LoginView(generics.ListCreateAPIView):
         password = request.data.get("password", "")
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            # login saves the user’s ID in the session,
-            # using Django’s session framework.
+            # login saves user ID in the session using Django’s session framework
             login(request, user)
             refresh = RefreshToken.for_user(user)
             serializer = TokenSerializer(data={
