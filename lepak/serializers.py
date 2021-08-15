@@ -1,22 +1,18 @@
 from .models import Profile, Journal
-from django.contrib.auth.models import User, Group
+# from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 
-# Serializer
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['id', 'username', 'password']
-
+# ========== Model Serialisers ==========
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ['id', 'user', 'breathe_theme', 'breathe_count']
-
-class TokenSerializer(serializers.Serializer):
-    token = serializers.CharField(max_length=255)
+        fields = ['__all__']
 
 class JournalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Journal
-        fields = ['id', 'date', 'title', 'entry', 'mood']
+        fields = '__all__'
+    
+# ========== JWT ==========
+class TokenSerializer(serializers.Serializer):
+    token = serializers.CharField(max_length=255)
