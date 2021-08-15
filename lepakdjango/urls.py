@@ -20,7 +20,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from lepak.views import UserViewSet, ProfileViewSet, JournalViewSet, LoginView, RegisterUsersView
+from lepak.views import ProfileViewSet, JournalViewSet, LoginView, RegisterUsersView
 
 router = routers.DefaultRouter()
 # router.register(r'users', UserViewSet) 
@@ -29,10 +29,11 @@ router.register(r'journals', JournalViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    # path('api/', include('lepak.urls'), namespace='lepak'),
     path('admin/', admin.site.urls),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('user/login/', LoginView.as_view(), name="auth-login"),
     path('user/signup/', RegisterUsersView.as_view(), name="user-signup"),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    # path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'lepak.apps.LepakConfig',
 ]
 
+AUTH_USER_MODEL = 'lepak.Profile'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
