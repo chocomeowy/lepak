@@ -18,6 +18,10 @@ class JournalViewSet(viewsets.ModelViewSet):
     serializer_class = JournalSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_queryset(self):
+        obj = Journal.objects.filter(profile=self.request.user)
+        return obj
+
 
 # ========== User Sessions ==========
 class LoginView(generics.ListCreateAPIView):
