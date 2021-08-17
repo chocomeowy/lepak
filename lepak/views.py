@@ -5,7 +5,8 @@ from rest_framework import viewsets, generics, permissions, status
 # from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import TokenSerializer, JournalSerializer, ProfileSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializers import TokenSerializer, JournalSerializer, ProfileSerializer, MyTokenObtainPairSerializer
 
 # ========== Model Viewsets ==========
 class ProfileViewSet(viewsets.ModelViewSet):
@@ -44,7 +45,7 @@ class LoginView(generics.ListCreateAPIView):
             refresh = RefreshToken.for_user(user)
             serializer = TokenSerializer(data={
                 # using DRF JWT utility functions to generate a token
-                "token": str(refresh.access_token)
+                "token": str(refresh.access_token),
                 })
             serializer.is_valid()
             return Response(serializer.data)
@@ -73,3 +74,6 @@ class RegisterUsersView(generics.ListCreateAPIView):
             username=username, password=password
         )
         return Response(status=status.HTTP_201_CREATED)
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
