@@ -22,14 +22,34 @@ class ProfileViewSet(viewsets.ModelViewSet):
             user = serializer.save()
             if user:
                 json = serializer.data
-                return response.Response(json, status=status.HTTP_201_CREATED)
+                return Response(json, status=status.HTTP_201_CREATED)
         else:
-            return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                data={
+                    "message": "Request is invalid."
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 class JournalViewSet(viewsets.ModelViewSet):
     queryset = Journal.objects.all()
     serializer_class = JournalSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def create(self, request, format='json'):
+        serializer = JournalSerializer(data=request.data)
+        if serializer.is_valid():
+            journal = serializer.save()
+            if journal:
+                json = serializer.data
+                return Response(json, status=status.HTTP_201_CREATED)
+        else:
+            return Response(
+                data={
+                    "message": "Journal entry not valid."
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
     def get_queryset(self):
         obj = Journal.objects.filter(profile=self.request.user)
@@ -78,14 +98,14 @@ class RegisterUsersView(generics.ListCreateAPIView):
         if not username or not password:
             return Response(
                 data={
-                    "message": "username and password is required to register a user"
+                    "message": "Username and password is required to register a user."
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )
         elif Profile.objects.get(username=username):
             return Response(
                 data={
-                    "message": "username already exists"
+                    "message": "Username already exists."
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )
@@ -98,14 +118,18 @@ class RegisterUsersView(generics.ListCreateAPIView):
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
-    # def post(self, request, *args, **kwargs):
-    #     serializer = self.get_serializer(data=request.data)
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
 
-    #     try:
-    #         serializer.is_valid(raise_exception=True)
-    #     except TokenError as e:
-    #         return JsonResponse({"error": "Invalid Token."}, status=status.HTTP_400_BAD_REQUEST)
-    #         raise InvalidToken(e.args[0])
+        try:
+            serializer.is_valid(raise_exception=True)
+        except TokenError as e:
+            return Response(
+                data={
+                    "message": "Invalid token."
+                },
+                status=status.HTTP_401_UNAUTHORIZED
+            )
 
-    #     return JsonResponse(serializer.validated_data, status=status.HTTP_200_OK)
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
