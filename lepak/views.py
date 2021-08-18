@@ -117,27 +117,3 @@ class RegisterUsersView(generics.ListCreateAPIView):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-
-        # try:
-        #     serializer.is_valid(raise_exception=True)
-        # except TokenError as e:
-        #     return Response(
-        #         data={
-        #             "message": "Invalid token."
-        #         },
-        #         status=status.HTTP_401_UNAUTHORIZED
-        #     )
-
-        if not Profile.objects.get(username=request.user.username):
-            return Response(
-                data={
-                    "message": "Unable to log in. Please try again."
-                },
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        return Response(serializer.validated_data, status=status.HTTP_200_OK)
-
