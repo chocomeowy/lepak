@@ -46,7 +46,7 @@ class JournalViewSet(viewsets.ModelViewSet):
         else:
             return Response(
                 data={
-                    "message": "Journal entry not valid."
+                    "message": "Journal entry not valid. Please indicate your mood."
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )
