@@ -50,7 +50,7 @@ class JournalViewSet(viewsets.ModelViewSet):
             )
 
     def get_queryset(self):
-        obj = Journal.objects.filter(profile=self.request.user)
+        obj = Journal.objects.filter(profile=self.request.user).order_by('-date')
         return obj
 
 
