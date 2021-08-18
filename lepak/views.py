@@ -1,13 +1,11 @@
 from django.contrib.auth import authenticate, login
-from django.http import JsonResponse
 # from django.contrib.auth.models import User
 from .models import Profile, Journal
-from rest_framework import viewsets, permissions, response, status, generics
+from rest_framework import viewsets, permissions, status, generics
 # from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from .serializers import TokenSerializer, JournalSerializer, ProfileSerializer, MyTokenObtainPairSerializer
 
 # ========== Model Viewsets ==========
