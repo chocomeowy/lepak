@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login
 # from django.contrib.auth.models import User
 from .models import Profile, Journal
-from rest_framework import viewsets, generics, permissions, status
+from rest_framework import viewsets, permissions, response, status, generics
 # from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
