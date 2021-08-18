@@ -87,6 +87,7 @@ class RegisterUsersView(generics.ListCreateAPIView):
                 data={
                     "message": "username already exists"
                 },
+                status=status.HTTP_400_BAD_REQUEST
             )
 
         new_user = Profile.objects.create_user(
