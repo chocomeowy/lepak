@@ -8,7 +8,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ['id', 'username', 'password']
-        ordering = ['date']
+        ordering = ['-date']
 
 class JournalSerializer(serializers.ModelSerializer):
     class Meta:
