@@ -131,7 +131,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
         #         status=status.HTTP_401_UNAUTHORIZED
         #     )
 
-        if not serializer.is_valid():
+        if not Profile.objects.get(username=request.user.username):
             return Response(
                 data={
                     "message": "Unable to log in. Please try again."
