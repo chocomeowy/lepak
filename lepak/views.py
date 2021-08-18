@@ -23,6 +23,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
             if user:
                 json = serializer.data
                 return response.Response(json, status=status.HTTP_201_CREATED)
+        else:
             return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class JournalViewSet(viewsets.ModelViewSet):
@@ -81,6 +82,13 @@ class RegisterUsersView(generics.ListCreateAPIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )
+        elif Profile.objects.get(username=username):
+            return Response(
+                data={
+                    "message": "username already exists"
+                },
+            )
+
         new_user = Profile.objects.create_user(
             username=username, password=password
         )
