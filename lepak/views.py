@@ -131,10 +131,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
         #         status=status.HTTP_401_UNAUTHORIZED
         #     )
 
-        if serializer.is_valid():
-            json = serializer.data
-            return Response(json, status=status.HTTP_201_CREATED)
-        else:
+        if not serializer.is_valid():
             return Response(
                 data={
                     "message": "Unable to log in. Please try again."
@@ -142,5 +139,5 @@ class MyTokenObtainPairView(TokenObtainPairView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # return Response(serializer.validated_data, status=status.HTTP_200_OK)
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
