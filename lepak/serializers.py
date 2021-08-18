@@ -25,7 +25,6 @@ class TokenSerializer(serializers.Serializer):
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
-        data = super().validate(attrs)
         if not Profile.objects.get(username=attrs.username):
             return Response(
                 data={
@@ -34,6 +33,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+        data = super().validate(attrs)
         refresh = self.get_token(self.user)
 
         data['refresh'] = str(refresh)
