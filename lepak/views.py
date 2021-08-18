@@ -121,15 +121,26 @@ class MyTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
 
-        try:
-            serializer.is_valid(raise_exception=True)
-        except TokenError as e:
+        # try:
+        #     serializer.is_valid(raise_exception=True)
+        # except TokenError as e:
+        #     return Response(
+        #         data={
+        #             "message": "Invalid token."
+        #         },
+        #         status=status.HTTP_401_UNAUTHORIZED
+        #     )
+
+        if serializer.is_valid():
+            json = serializer.data
+            return Response(json, status=status.HTTP_201_CREATED)
+        else:
             return Response(
                 data={
-                    "message": "Invalid token."
+                    "message": "Unable to log in. Please try again."
                 },
-                status=status.HTTP_401_UNAUTHORIZED
+                status=status.HTTP_400_BAD_REQUEST
             )
 
-        return Response(serializer.validated_data, status=status.HTTP_200_OK)
+        # return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
