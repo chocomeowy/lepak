@@ -24,25 +24,25 @@ class TokenSerializer(serializers.Serializer):
     token = serializers.CharField(max_length=255)
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    def validate(self, attrs):
-        if not Profile.objects.get(username=attrs.username):
-            return Response(
-                data={
-                    "message": "User does not exist."
-                },
-                status=status.HTTP_400_BAD_REQUEST
-            )
+    # def validate(self, attrs):
+    #     if not Profile.objects.get(username=attrs.username):
+    #         return Response(
+    #             data={
+    #                 "message": "User does not exist."
+    #             },
+    #             status=status.HTTP_400_BAD_REQUEST
+    #         )
 
-        data = super().validate(attrs)
-        refresh = self.get_token(self.user)
+    #     data = super().validate(attrs)
+    #     refresh = self.get_token(self.user)
 
-        data['refresh'] = str(refresh)
-        data['access'] = str(refresh.access_token)
+    #     data['refresh'] = str(refresh)
+    #     data['access'] = str(refresh.access_token)
 
-        if api_settings.UPDATE_LAST_LOGIN:
-            update_last_login(None, self.user)
+    #     if api_settings.UPDATE_LAST_LOGIN:
+    #         update_last_login(None, self.user)
 
-        return data
+    #     return data
 
     def get_token(cls, user):
         token = super().get_token(user)
