@@ -1,7 +1,6 @@
 from .models import Profile, Journal
 # from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 # ========== Model Serialisers ==========
@@ -9,6 +8,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ['id', 'username', 'password']
+        ordering = ['date']
 
 class JournalSerializer(serializers.ModelSerializer):
     class Meta:
