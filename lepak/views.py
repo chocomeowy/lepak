@@ -78,8 +78,8 @@ class LoginView(generics.ListCreateAPIView):
                 "token": str(refresh.access_token),
                 })
             serializer.is_valid()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(data={"mesaage": "Unauthorised."}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response(serializer.data)
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 class RegisterUsersView(generics.ListCreateAPIView):
     """
@@ -100,17 +100,14 @@ class RegisterUsersView(generics.ListCreateAPIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )
-<<<<<<< HEAD
-        if Profile.objects.get(username=username):
-=======
         elif Profile.objects.filter(username=username).exists():
->>>>>>> d6d54121810c3e3ea7c5c0f5852b642a57573ca7
             return Response(
                 data={
                     "message": "Username already exists."
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )
+
         new_user = Profile.objects.create_user(
             username=username, password=password
         )
