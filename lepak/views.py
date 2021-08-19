@@ -100,7 +100,7 @@ class RegisterUsersView(generics.ListCreateAPIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )
-        elif Profile.objects.get(username=username):
+        if Profile.objects.get(username=username):
             return Response(
                 data={
                     "message": "Username already exists."
