@@ -27,7 +27,5 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
 
         token['username'] = user.username
-        token['breathe_theme'] = user.breathe_theme
-        token['breathe_count'] = user.breathe_count
 
         return token
