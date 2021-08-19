@@ -111,7 +111,9 @@ class RegisterUsersView(generics.ListCreateAPIView):
         new_user = Profile.objects.create_user(
             username=username, password=password
         )
-        return Response(status=status.HTTP_201_CREATED)
+        return Response(data={
+                    "success": "success"
+                },status=status.HTTP_201_CREATED)
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
